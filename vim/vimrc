@@ -6,10 +6,11 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 " Plugings
-Plugin 'VundleVim/Vundle.vim' " Required by Vundle
-Plugin 'ctrlpvim/ctrlp.vim'   " Fuzyy file finder
-Plugin 'tpope/vim-surround'   " Adds surrounding operations
-Plugin 'tpope/vim-repeat'     " Supercharge '.' command
+Plugin 'VundleVim/Vundle.vim'    " Required by Vundle
+Plugin 'ctrlpvim/ctrlp.vim'      " Fuzyy file finder
+Plugin 'tpope/vim-surround'      " Adds surrounding operations
+Plugin 'tpope/vim-repeat'        " Supercharge '.' command
+Plugin 'Valloric/YouCompleteMe'  " Autocompletion
 
 call vundle#end()             " Required by Vundle
 filetype plugin indent on     " Required by Vundle
@@ -106,3 +107,15 @@ set tabstop=2
 set shiftwidth=2
 set expandtab
 set smarttab
+
+" The Silver Searcher
+if executable('ag')
+  " Use ag over grep
+  set grepprg=ag\ --nogroup\ --nocolor
+
+  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+
+  " ag is fast enough that CtrlP doesn't need to cache
+  let g:ctrlp_use_caching = 0
+endif
