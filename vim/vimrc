@@ -11,6 +11,7 @@ Plugin 'ctrlpvim/ctrlp.vim'      " Fuzyy file finder
 Plugin 'tpope/vim-surround'      " Adds surrounding operations
 Plugin 'tpope/vim-repeat'        " Supercharge '.' command
 Plugin 'Valloric/YouCompleteMe'  " Autocompletion
+Plugin 'tpope/vim-fugitive'      " Git integration
 
 call vundle#end()             " Required by Vundle
 filetype plugin indent on     " Required by Vundle
