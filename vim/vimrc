@@ -6,15 +6,50 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 " Plugings
-Plugin 'VundleVim/Vundle.vim'    " Required by Vundle
-Plugin 'ctrlpvim/ctrlp.vim'      " Fuzyy file finder
-Plugin 'tpope/vim-surround'      " Adds surrounding operations
-Plugin 'tpope/vim-repeat'        " Supercharge '.' command
-Plugin 'Valloric/YouCompleteMe'  " Autocompletion
-Plugin 'tpope/vim-fugitive'      " Git integration
+" To install plugins run :PluginInstall
+Plugin 'VundleVim/Vundle.vim'            " Required by Vundle
+Plugin 'ctrlpvim/ctrlp.vim'              " Fuzyy file finder
+Plugin 'tpope/vim-surround'              " Adds surrounding operations
+Plugin 'tpope/vim-repeat'                " Supercharge '.' command
+Plugin 'Valloric/YouCompleteMe'          " Autocompletion
+Plugin 'tpope/vim-fugitive'              " Git integration
+Plugin 'elixir-lang/vim-elixir'          " Elixir support
+Plugin 'elmcast/elm-vim'                 " Elm support
+Plugin 'vim-airline/vim-airline'         " Status bar
+Plugin 'vim-airline/vim-airline-themes'  " Colour schemes for vim-airline
+Plugin 'flazz/vim-colorschemes'          " Colour schemes
+Plugin 'scrooloose/nerdtree'             " File explorer
+Plugin 'vim-syntastic/syntastic'         " Syntax checking
+Plugin 'ConradIrwin/vim-bracketed-paste' " Automatically set paste when pasting
 
 call vundle#end()             " Required by Vundle
 filetype plugin indent on     " Required by Vundle
+
+" set colorscheme using the vundle plugin from above
+colorscheme jellybeans
+" set the matching colorscheme for vim-airline
+let g:airline_theme='jellybeans'
+
+" custom bindings
+map ,m :NERDTreeToggle<CR>
+map ,n :NERDTreeFind<CR>
+
+" recommend syntastic settings for new users
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+" Elixir syntax checking
+" let g:syntastic_enable_elixir_checker = 1
+" let g:syntastic_elixir_checkers = ['elixir']
+
+" JS syntax checking
+let g:syntastic_javascript_checkers = ['standard']
 
 " allow backspacing over everything in insert mode
 set backspace=indent,eol,start
@@ -120,3 +155,9 @@ if executable('ag')
   " ag is fast enough that CtrlP doesn't need to cache
   let g:ctrlp_use_caching = 0
 endif
+
+" My custom settings
+nmap - gT
+nmap = gt
+nmap _ :tabm -1<CR>
+nmap + :tabm +1<CR>
