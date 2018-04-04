@@ -11,6 +11,7 @@ Plugin 'VundleVim/Vundle.vim'            " Required by Vundle
 Plugin 'ctrlpvim/ctrlp.vim'              " Fuzyy file finder
 Plugin 'tpope/vim-surround'              " Adds surrounding operations
 Plugin 'tpope/vim-repeat'                " Supercharge '.' command
+Plugin 'tpope/vim-commentary'            " Easy commenting/uncommenting
 Plugin 'Valloric/YouCompleteMe'          " Autocompletion
 Plugin 'tpope/vim-fugitive'              " Git integration
 Plugin 'elixir-lang/vim-elixir'          " Elixir support
