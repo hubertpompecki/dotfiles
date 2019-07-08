@@ -1,0 +1,14 @@
+[user]
+	name = Hubert Pompecki
+	email = hpompecki@gmail.com
+[push]
+	default = simple
+[core]
+	editor = /usr/local/bin/nvim
+	excludesfile = /Users/hubert/.gitignore_global
+[alias]
+	sla = log --oneline --decorate --graph --all
+	br = branch
+	st = status
+	co = commit
+	ch = checkout
