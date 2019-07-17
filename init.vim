@@ -14,7 +14,6 @@ Plug 'ConradIrwin/vim-bracketed-paste'                        " Automatically se
 Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}    " Autocompletion
 " Plug 'w0rp/ale'                                               " Lint as you type
 Plug 'ap/vim-css-color'                                       " Colour colour names and codes
-Plug 'jiangmiao/auto-pairs'                                   " Autoclosing brackets
 Plug 'christoomey/vim-tmux-navigator'                         " Easy navigating between tmux and vim
 Plug 'terryma/vim-multiple-cursors'                           " Multiple cursors
 Plug 'nanotech/jellybeans.vim'
