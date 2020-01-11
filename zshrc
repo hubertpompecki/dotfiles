@@ -1,6 +1,11 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
+. $HOME/.secrets.sh
+
+export PATH=$PATH:$HOME/bin
+
+ZSH_DISABLE_COMPFIX="true"
 # Path to your oh-my-zsh installation.
 export ZSH="/Users/hubert/.oh-my-zsh"
 
@@ -106,13 +111,6 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-# tabtab source for serverless package
-# uninstall by removing these lines or running `tabtab uninstall serverless`
-[[ -f /Users/hubert/Work/matalan-integrations/create-order/node_modules/tabtab/.completions/serverless.zsh ]] && . /Users/hubert/Work/matalan-integrations/create-order/node_modules/tabtab/.completions/serverless.zsh
-# tabtab source for sls package
-# uninstall by removing these lines or running `tabtab uninstall sls`
-[[ -f /Users/hubert/Work/matalan-integrations/create-order/node_modules/tabtab/.completions/sls.zsh ]] && . /Users/hubert/Work/matalan-integrations/create-order/node_modules/tabtab/.completions/sls.zsh
-
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # The next line updates PATH for the Google Cloud SDK.
@@ -120,3 +118,13 @@ if [ -f '/Users/hubert/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/hubert/g
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/hubert/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/hubert/google-cloud-sdk/completion.zsh.inc'; fi
+
+. /usr/local/opt/asdf/asdf.sh
+
+. /usr/local/opt/asdf/etc/bash_completion.d/asdf.bash
+
+# Use vim keys
+bindkey -v
+bindkey "^R" fzf-history-widget
+bindkey "^T" fzf-file-widget
+

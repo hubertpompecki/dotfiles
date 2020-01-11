@@ -19,7 +19,9 @@ Plug 'terryma/vim-multiple-cursors'                           " Multiple cursors
 Plug 'nanotech/jellybeans.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'JamshedVesuna/vim-markdown-preview'
+Plug 'slashmili/alchemist.vim'
 Plug 'elixir-editors/vim-elixir'
+Plug 'mhinz/vim-mix-format'
 
 " Initialize plugin system
 call plug#end()
@@ -213,3 +215,6 @@ nnoremap <silent> <space>j  :<C-u>CocNext<CR>
 nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list
 nnoremap <silent> <space>p  :<C-u>CocListResume<CR> ##########
+
+" Run mix format on save
+let g:mix_format_on_save = 1
