@@ -78,6 +78,7 @@ export NVM_DIR="$HOME/.nvm"
 plugins=(
   git
   zsh-autosuggestions
+  vi-mode
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -128,3 +129,4 @@ bindkey -v
 bindkey "^R" fzf-history-widget
 bindkey "^T" fzf-file-widget
 
+export ERL_AFLAGS="-kernel shell_history enabled"

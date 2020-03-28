@@ -73,7 +73,7 @@ let g:ale_javascript_eslint_use_global = 1
 " Copy file name into clipboard
 noremap <leader>f :let @*=expand("%")<CR>
 " Open fzf with ctrl p
-nnoremap <C-p> :Files<CR>
+nnoremap <C-p> :GFiles<CR>
 " Open history
 nnoremap <leader>h :History<CR>
 " Open buffers
@@ -218,3 +218,5 @@ nnoremap <silent> <space>p  :<C-u>CocListResume<CR> ##########
 
 " Run mix format on save
 let g:mix_format_on_save = 1
+
+" delcommand W
