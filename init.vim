@@ -3,7 +3,6 @@ call plug#begin('~/.local/share/nvim/plugged')
 
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
-Plug 'ludovicchabant/vim-gutentags'
 Plug 'sheerun/vim-polyglot'                                   " Syntax highlighting for multiple languages
 Plug 'tpope/vim-surround'                                     " Adds surrounding operations
 Plug 'tpope/vim-repeat'                                       " Supercharge '.' command
@@ -12,19 +11,20 @@ Plug 'tpope/vim-fugitive'                                     " Git integration
 Plug 'tpope/vim-eunuch'                                       " Helpers for UNIX
 Plug 'ConradIrwin/vim-bracketed-paste'                        " Automatically set paste when pasting
 Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}    " Autocompletion
-" Plug 'w0rp/ale'                                               " Lint as you type
+Plug 'elixir-lsp/coc-elixir', {'do': 'yarn install && yarn prepack'}
 Plug 'ap/vim-css-color'                                       " Colour colour names and codes
 Plug 'christoomey/vim-tmux-navigator'                         " Easy navigating between tmux and vim
 Plug 'terryma/vim-multiple-cursors'                           " Multiple cursors
 Plug 'nanotech/jellybeans.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'JamshedVesuna/vim-markdown-preview'
-Plug 'slashmili/alchemist.vim'
 Plug 'elixir-editors/vim-elixir'
 Plug 'mhinz/vim-mix-format'
+Plug 'BrandonRoehl/auto-omni'
 
 " Initialize plugin system
 call plug#end()
+
 
 
 
@@ -52,6 +52,10 @@ autocmd FileType go setlocal ts=4  shiftwidth=4
 set number
 set numberwidth=4
 :highlight LineNr term=bold cterm=NONE ctermfg=DarkGrey ctermbg=NONE gui=NONE guifg=DarkGrey guibg=NONE
+" Open new vertical splits to the right
+set splitright
+
+
 
 
 
@@ -59,12 +63,6 @@ set numberwidth=4
 
 " Tell neovim where to find python3 so it boots up faster
 let g:python3_host_prog = '/usr/local/bin/python3'
-
-
-
-" ########## Ale ##########
-let g:ale_linters = {'javascript': ['eslint']}
-let g:ale_javascript_eslint_use_global = 1
 
 
 
@@ -133,7 +131,7 @@ inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 nmap <silent> [c <Plug>(coc-diagnostic-prev)
 nmap <silent> ]c <Plug>(coc-diagnostic-next)
 
-" Remap keys for gotos
+" " Remap keys for gotos
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
@@ -150,38 +148,17 @@ function! s:show_documentation()
   endif
 endfunction
 
-" Highlight symbol under cursor on CursorHold
+" " Highlight symbol under cursor on CursorHold
 autocmd CursorHold * silent call CocActionAsync('highlight')
 
 " Remap for rename current word
 nmap <leader>rn <Plug>(coc-rename)
 
-" Remap for format selected region
-" vmap <leader>f  <Plug>(coc-format-selected)
-" nmap <leader>f  <Plug>(coc-format-selected)
-
-augroup mygroup
-  autocmd!
-  " Setup formatexpr specified filetype(s).
-  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-  " Update signature help on jump placeholder
-  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-augroup end
-
-" Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
-vmap <leader>a  <Plug>(coc-codeaction-selected)
-nmap <leader>a  <Plug>(coc-codeaction-selected)
-
-" Remap for do codeAction of current line
-nmap <leader>ac  <Plug>(coc-codeaction)
-" Fix autofix problem of current line
-nmap <leader>qf  <Plug>(coc-fix-current)
-
 " Use `:Format` for format current buffer
 command! -nargs=0 Format :call CocAction('format')
 
 " Use `:Fold` for fold current buffer
-command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+command! -nargs=? Fold :call CocAction('fold', <f-args>)
 
 
 " Add diagnostic info for https://github.com/itchyny/lightline.vim
@@ -218,5 +195,3 @@ nnoremap <silent> <space>p  :<C-u>CocListResume<CR> ##########
 
 " Run mix format on save
 let g:mix_format_on_save = 1
-
-" delcommand W

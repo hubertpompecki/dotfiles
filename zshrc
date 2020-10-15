@@ -130,3 +130,6 @@ bindkey "^R" fzf-history-widget
 bindkey "^T" fzf-file-widget
 
 export ERL_AFLAGS="-kernel shell_history enabled"
+
+# Enable jump
+eval "$(jump shell)"
