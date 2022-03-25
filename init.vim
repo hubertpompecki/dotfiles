@@ -1,8 +1,10 @@
 " " Specify a directory for plugins
 call plug#begin('~/.local/share/nvim/plugged')
 
-Plug '/usr/local/opt/fzf'
-Plug 'junegunn/fzf.vim'
+Plug 'neovim/nvim-lspconfig'                                  " Language server
+Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}                     " Autocompletion
+Plug '/usr/local/opt/fzf'                                     " File finding
+Plug 'junegunn/fzf.vim'                                       " File finding
 Plug 'sheerun/vim-polyglot'                                   " Syntax highlighting for multiple languages
 Plug 'tpope/vim-surround'                                     " Adds surrounding operations
 Plug 'tpope/vim-repeat'                                       " Supercharge '.' command
@@ -10,24 +12,45 @@ Plug 'tpope/vim-commentary'                                   " Easy commenting/
 Plug 'tpope/vim-fugitive'                                     " Git integration
 Plug 'tpope/vim-eunuch'                                       " Helpers for UNIX
 Plug 'ConradIrwin/vim-bracketed-paste'                        " Automatically set paste when pasting
-Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}    " Autocompletion
-Plug 'elixir-lsp/coc-elixir', {'do': 'yarn install && yarn prepack'}
 Plug 'ap/vim-css-color'                                       " Colour colour names and codes
 Plug 'christoomey/vim-tmux-navigator'                         " Easy navigating between tmux and vim
 Plug 'terryma/vim-multiple-cursors'                           " Multiple cursors
-Plug 'nanotech/jellybeans.vim'
-Plug 'scrooloose/nerdtree'
-Plug 'JamshedVesuna/vim-markdown-preview'
-Plug 'elixir-editors/vim-elixir'
-Plug 'mhinz/vim-mix-format'
-Plug 'BrandonRoehl/auto-omni'
+Plug 'nanotech/jellybeans.vim'                                " Colour scheme
+Plug 'scrooloose/nerdtree'                                    " File tree
+Plug 'JamshedVesuna/vim-markdown-preview'                     " Markdown
+Plug 'elixir-editors/vim-elixir'                              " Elixir utils
+Plug 'mhinz/vim-mix-format'                                   " Mix format
 
 " Initialize plugin system
 call plug#end()
 
+lua << EOF
+local lspconfig = require("lspconfig")
+local path_to_elixirls = vim.fn.expand("~/elixir-ls/rel/language_server.sh")
 
+lspconfig.elixirls.setup({
+  cmd = {path_to_elixirls},
+  capabilities = capabilities,
+  on_attach = on_attach,
+  settings = {
+    elixirLS = {
+      -- I choose to disable dialyzer for personal reasons, but
+      -- I would suggest you also disable it unless you are well
+      -- aquainted with dialzyer and know how to use it.
+      dialyzerEnabled = false,
+      -- I also choose to turn off the auto dep fetching feature.
+      -- It often get's into a weird state that requires deleting
+      -- the .elixir_ls directory and restarting your editor.
+      fetchDeps = false
+    }
+  }
+})
+EOF
 
-
+" Needs to so that going to definition can change buffers
+set hidden
+nmap <silent> gd <cmd>lua vim.lsp.buf.definition()<cr>
+nmap <silent> K <cmd>lua vim.lsp.buf.hover()<cr>
 
 " ########## General vim ##########
 let g:jellybeans_overrides = {
@@ -54,22 +77,14 @@ set numberwidth=4
 :highlight LineNr term=bold cterm=NONE ctermfg=DarkGrey ctermbg=NONE gui=NONE guifg=DarkGrey guibg=NONE
 " Open new vertical splits to the right
 set splitright
-
-
-
-
-
-" ########## General neovim ##########
-
+set foldmethod=syntax
+set foldlevelstart=99
 " Tell neovim where to find python3 so it boots up faster
 let g:python3_host_prog = '/usr/local/bin/python3'
-
-
-
-" ########## Other ##########
-
 " Copy file name into clipboard
 noremap <leader>f :let @*=expand("%")<CR>
+" Copy to system clipboard
+noremap <leader>c "*y<CR>
 " Open fzf with ctrl p
 nnoremap <C-p> :GFiles<CR>
 " Open history
@@ -86,112 +101,7 @@ nnoremap ,n :NERDTreeToggle<CR>
 let vim_markdown_preview_github=1
 let vim_markdown_preview_toggle=2
 let vim_markdown_preview_github=1
-
-" ########## Autocompletion coc.nvim
-" if hidden is not set, TextEdit might fail.
-set hidden
-
-" Some server have issues with backup files, see #649
-set nobackup
-set nowritebackup
-
-" Better display for messages
-set cmdheight=2
-
-" Smaller updatetime for CursorHold & CursorHoldI
-set updatetime=300
-
-" don't give |ins-completion-menu| messages.
-set shortmess+=c
-
-" always show signcolumns
-set signcolumn=yes
-
-" Use tab for trigger completion with characters ahead and navigate.
-" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
-" Use <c-space> for trigger completion.
-inoremap <silent><expr> <c-space> coc#refresh()
-
-" Use <cr> for confirm completion, `<C-g>u` means break undo chain at current position.
-" Coc only does snippet and additional edit on confirm.
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-
-" Use `[c` and `]c` for navigate diagnostics
-nmap <silent> [c <Plug>(coc-diagnostic-prev)
-nmap <silent> ]c <Plug>(coc-diagnostic-next)
-
-" " Remap keys for gotos
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
-
-" Use K for show documentation in preview window
-nnoremap <silent> K :call <SID>show_documentation()<CR>
-
-function! s:show_documentation()
-  if &filetype == 'vim'
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
-endfunction
-
-" " Highlight symbol under cursor on CursorHold
-autocmd CursorHold * silent call CocActionAsync('highlight')
-
-" Remap for rename current word
-nmap <leader>rn <Plug>(coc-rename)
-
-" Use `:Format` for format current buffer
-command! -nargs=0 Format :call CocAction('format')
-
-" Use `:Fold` for fold current buffer
-command! -nargs=? Fold :call CocAction('fold', <f-args>)
-
-
-" Add diagnostic info for https://github.com/itchyny/lightline.vim
-let g:lightline = {
-      \ 'colorscheme': 'wombat',
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'cocstatus', 'readonly', 'filename', 'modified' ] ]
-      \ },
-      \ 'component_function': {
-      \   'cocstatus': 'coc#status'
-      \ },
-      \ }
-
-
-
-" Using CocList
-" Show all diagnostics
-nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
-" Manage extensions
-nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
-" Show commands
-nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
-" Find symbol of current document
-nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
-" Search workspace symbols
-nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
-" Do default action for next item.
-nnoremap <silent> <space>j  :<C-u>CocNext<CR>
-" Do default action for previous item.
-nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
-" Resume latest coc list
-nnoremap <silent> <space>p  :<C-u>CocListResume<CR> ##########
-
 " Run mix format on save
 let g:mix_format_on_save = 1
+" Fixes vim-tmux-navigator conflicting with coq_nvim
+nnoremap <silent> <c-h> :TmuxNavigateLeft<cr>

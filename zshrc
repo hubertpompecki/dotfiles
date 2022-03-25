@@ -13,6 +13,9 @@ export ZSH="/Users/hubert/.oh-my-zsh"
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin
 
+# Set path for Python packages
+export PATH=$PATH:/Users/hubert/.local/bin
+
 # Set editor for tmux
 export EDITOR=nvim
 

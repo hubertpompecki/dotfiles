@@ -4,7 +4,7 @@
 [push]
 	default = simple
 [core]
-	editor = /usr/local/bin/nvim
+	editor = /Users/hubert/.asdf/shims/nvim
 	excludesfile = /Users/hubert/.gitignore_global
 [alias]
 	sla = log --oneline --decorate --graph --all
@@ -12,3 +12,7 @@
 	st = status
 	co = commit
 	ch = checkout
+[pull]
+	rebase = false
+[url "git@github.com:"]
+	insteadOf = https://github.com/
