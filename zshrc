@@ -1,9 +1,7 @@
 # If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=$HOME/bin:/usr/local/bin:/Users/hubert/Library/Python/3.8/bin:/Users/hubert/Work/tel-apps/bin:$PATH
 
 . $HOME/.secrets.sh
-
-export PATH=$PATH:$HOME/bin
 
 ZSH_DISABLE_COMPFIX="true"
 # Path to your oh-my-zsh installation.
@@ -136,3 +134,7 @@ export ERL_AFLAGS="-kernel shell_history enabled"
 
 # Enable jump
 eval "$(jump shell)"
+
+### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
+export PATH="/Users/hubert/.rd/bin:$PATH"
+### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)

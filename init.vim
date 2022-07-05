@@ -3,6 +3,7 @@ call plug#begin('~/.local/share/nvim/plugged')
 
 Plug 'neovim/nvim-lspconfig'                                  " Language server
 Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}                     " Autocompletion
+Plug 'ms-jpq/coq.artifacts', {'branch': 'artifacts'}          " Autocompletion snippets
 Plug '/usr/local/opt/fzf'                                     " File finding
 Plug 'junegunn/fzf.vim'                                       " File finding
 Plug 'sheerun/vim-polyglot'                                   " Syntax highlighting for multiple languages
@@ -24,7 +25,9 @@ Plug 'mhinz/vim-mix-format'                                   " Mix format
 " Initialize plugin system
 call plug#end()
 
+let g:coq_settings = {'auto_start': 'shut-up'}
 lua << EOF
+local coq = require("coq")
 local lspconfig = require("lspconfig")
 local path_to_elixirls = vim.fn.expand("~/elixir-ls/rel/language_server.sh")
 
