@@ -25,8 +25,8 @@ Plug 'mhinz/vim-mix-format'                                   " Mix format
 " Initialize plugin system
 call plug#end()
 
-# jump to mark is disabled because it's set to <c-h> by default which conflicts with
-# vim-tmux-navigator
+" jump to mark is disabled because it's set to <c-h> by default which conflicts with
+" vim-tmux-navigator
 let g:coq_settings = {'auto_start': 'shut-up', 'keymap.jump_to_mark': 'null'}
 lua << EOF
 local coq = require("coq")
