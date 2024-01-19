@@ -2,7 +2,8 @@
 call plug#begin('~/.local/share/nvim/plugged')
 
 Plug 'neovim/nvim-lspconfig'                                  " Language server
-Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}                     " Autocompletion
+Plug 'ms-jpq/coq_nvim'                                        " Autocompletion, using a commit version due to freezes
+" Plug 'ms-jpq/coq_nvim', {'commit': '5eddd3'}                " BACKUP Autocompletion, using a commit version due to freezes
 Plug 'ms-jpq/coq.artifacts', {'branch': 'artifacts'}          " Autocompletion snippets
 Plug '/usr/local/opt/fzf'                                     " File finding
 Plug 'junegunn/fzf.vim'                                       " File finding
@@ -11,32 +12,48 @@ Plug 'tpope/vim-surround'                                     " Adds surrounding
 Plug 'tpope/vim-repeat'                                       " Supercharge '.' command
 Plug 'tpope/vim-commentary'                                   " Easy commenting/uncommenting
 Plug 'tpope/vim-fugitive'                                     " Git integration
+Plug 'tpope/vim-rhubarb'                                      " GBrowse for GitHub
 Plug 'tpope/vim-eunuch'                                       " Helpers for UNIX
 Plug 'ConradIrwin/vim-bracketed-paste'                        " Automatically set paste when pasting
 Plug 'ap/vim-css-color'                                       " Colour colour names and codes
 Plug 'christoomey/vim-tmux-navigator'                         " Easy navigating between tmux and vim
 Plug 'terryma/vim-multiple-cursors'                           " Multiple cursors
 Plug 'nanotech/jellybeans.vim'                                " Colour scheme
-Plug 'scrooloose/nerdtree'                                    " File tree
-Plug 'JamshedVesuna/vim-markdown-preview'                     " Markdown
 Plug 'elixir-editors/vim-elixir'                              " Elixir utils
-Plug 'mhinz/vim-mix-format'                                   " Mix format
+"Plug 'mhinz/vim-mix-format'                                   " Mix format
+Plug 'lukas-reineke/lsp-format.nvim'
+Plug 'github/copilot.vim'                                     " AI copilot
 
 " Initialize plugin system
 call plug#end()
 
+" Enable copilot
+let b:copilot_enabled = v:true
+
 " jump to mark is disabled because it's set to <c-h> by default which conflicts with
 " vim-tmux-navigator
-let g:coq_settings = {'auto_start': 'shut-up', 'keymap.jump_to_mark': 'null'}
+" recommended keymaps are disabled because they conflict with copilot
+let g:coq_settings = {'auto_start': v:true, 'keymap.jump_to_mark': '<c-0>', "keymap.recommended": v:false}
+
+" Keybindings
+ino <silent><expr> <Esc>   pumvisible() ? "\<C-e><Esc>" : "\<Esc>"
+ino <silent><expr> <C-c>   pumvisible() ? "\<C-e><C-c>" : "\<C-c>"
+ino <silent><expr> <BS>    pumvisible() ? "\<C-e><BS>"  : "\<BS>"
+ino <silent><expr> <CR>    pumvisible() ? (complete_info().selected == -1 ? "\<C-e><CR>" : "\<C-y>") : "\<CR>"
+" ino <silent><expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+ino <silent><expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<BS>"
+
 lua << EOF
 local coq = require("coq")
 local lspconfig = require("lspconfig")
-local path_to_elixirls = vim.fn.expand("~/elixir-ls/rel/language_server.sh")
+local path_to_elixirls = vim.fn.expand("~/elixir-ls/release/elixir-ls")
+
+require("lsp-format").setup {}
 
 lspconfig.elixirls.setup({
   cmd = {path_to_elixirls},
   capabilities = capabilities,
-  on_attach = on_attach,
+  on_attach = require("lsp-format").on_attach,
   settings = {
     elixirLS = {
       -- I choose to disable dialyzer for personal reasons, but
@@ -50,11 +67,14 @@ lspconfig.elixirls.setup({
     }
   }
 })
+
+require'lspconfig'.gopls.setup{ on_attach = require("lsp-format").on_attach }
 EOF
 
 " Needs to so that going to definition can change buffers
 set hidden
 nmap <silent> gd <cmd>lua vim.lsp.buf.definition()<cr>
+nmap <silent> ? <cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<cr>
 nmap <silent> K <cmd>lua vim.lsp.buf.hover()<cr>
 
 " ########## General vim ##########
@@ -98,13 +118,9 @@ nnoremap <leader>h :History<CR>
 nnoremap <leader>b :Buffers<CR>
 " Easily clear highligt
 nnoremap ,<space> :noh<CR>
-" Easily show current file in NERDTree
-nnoremap ,f :NERDTreeFind<CR>
-" Easily open NERDTree
-nnoremap ,n :NERDTreeToggle<CR>
-" Preview Markdown using grip
-let vim_markdown_preview_github=1
-let vim_markdown_preview_toggle=2
-let vim_markdown_preview_github=1
 " Run mix format on save
 let g:mix_format_on_save = 1
+" Exit terminal with Esc
+:tnoremap <Esc> <C-\><C-n>
+" Disable line numbers in terminal
+autocmd TermOpen * setlocal nonumber norelativenumber

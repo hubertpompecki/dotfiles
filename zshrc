@@ -1,11 +1,14 @@
 # If you come from bash you might have to change your $PATH.
-export PATH=$HOME/bin:/usr/local/bin:/Users/hubert/Library/Python/3.8/bin:/Users/hubert/Work/tel-apps/bin:$PATH
+export PATH=$HOME/bin:/usr/local/bin:/Users/hubert/elixir-ls/release:/Users/hubert/Library/Python/3.9/bin:/Users/hubert/Work/tel-apps/bin:/Applications/Wireshark.app/Contents/MacOS:$PATH
 
 . $HOME/.secrets.sh
 
 ZSH_DISABLE_COMPFIX="true"
 # Path to your oh-my-zsh installation.
 export ZSH="/Users/hubert/.oh-my-zsh"
+
+# Helix's runtime files
+export HELIX_RUNTIME=/Users/hubert/helix/runtime
 
 # Set Go paths
 export GOPATH=$HOME/go
@@ -121,7 +124,7 @@ if [ -f '/Users/hubert/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/hubert/g
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/hubert/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/hubert/google-cloud-sdk/completion.zsh.inc'; fi
 
-. /usr/local/opt/asdf/asdf.sh
+. /usr/local/opt/asdf/libexec/asdf.sh
 
 . /usr/local/opt/asdf/etc/bash_completion.d/asdf.bash
 
@@ -138,3 +141,7 @@ eval "$(jump shell)"
 ### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
 export PATH="/Users/hubert/.rd/bin:$PATH"
 ### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
+
+# . /usr/local/opt/asdf/asdf.sh
+
+. /usr/local/opt/asdf/etc/bash_completion.d/asdf.bash
